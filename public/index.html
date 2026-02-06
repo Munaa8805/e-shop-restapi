@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="E-Shop Backend API. Developed by Munaa. Copyright © 2026 Munaa. All rights reserved. All images are the property of their respective owners. This is a demo project for educational purposes only. Do not use for commercial purposes.">
+    <meta name="keywords" content="E-Shop, Backend, API, Documentation, Munaa, Demo, Educational, Project">
+    <meta name="author" content="Munaa">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    <meta name="yandexbot" content="index, follow">
+    <meta name="sitemap" content="https://restapi.munaa.dev">
+    <meta name="google-site-verification" content="munaa-verification-code">
+    <title>REST API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 5px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+        }
+
+        .endpoint {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .endpoint:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+            color: white;
+        }
+
+        .method.get {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .method.post {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .method.put {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .method.patch {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+
+        .method.delete {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #2d3748;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .endpoint-description {
+            color: #4a5568;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .auth-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .auth-badge.admin {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .params {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .params-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .param-item {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .param-item::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .param-name {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .param-type {
+            color: #718096;
+            font-style: italic;
+        }
+
+        .param-required {
+            color: #e53e3e;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .query-param {
+            display: inline-block;
+            background: #edf2f7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-left: 5px;
+            color: #4a5568;
+        }
+
+        .base-url {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #f39c12;
+        }
+
+        .info-box h3 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .endpoint-path {
+                font-size: 0.95em;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 REST API Documentation</h1>
+            <p>Complete API Reference for E-Shop Backend</p>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <h3>📌 Base URL</h3>
+                <div class="base-url">http://localhost:6060/api/v1</div>
+                <p><strong>Note:</strong> All endpoints require authentication unless specified. Admin-only endpoints
+                    are marked with 🔒 Admin badge.</p>
+            </div>
+
+            <!-- Authentication Routes -->
+            <div class="section">
+                <div class="section-title">🔐 Authentication</div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/auth/register</span>
+                    <div class="endpoint-description">Register a new user account</div>
+                    <div class="params">
+                        <div class="params-title">Body Parameters:</div>
+                        <div class="param-item">
+                            <span class="param-name">name</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Minimum 4 characters
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">email</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Valid email format
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">password</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Minimum 4 characters
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/auth/login</span>
+                    <div class="endpoint-description">Login and get authentication token</div>
+                    <div class="params">
+                        <div class="params-title">Body Parameters:</div>
+                        <div class="param-item">
+                            <span class="param-name">email</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Valid email format
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">password</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/auth/logout</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Logout current user</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/auth/me</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Get current authenticated user information</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/auth/forgot-password</span>
+                    <div class="endpoint-description">Request password reset token</div>
+                    <div class="params">
+                        <div class="params-title">Body Parameters:</div>
+                        <div class="param-item">
+                            <span class="param-name">email</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Valid email format
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/auth/reset-password</span>
+                    <div class="endpoint-description">Reset password using token</div>
+                    <div class="params">
+                        <div class="params-title">Body Parameters:</div>
+                        <div class="param-item">
+                            <span class="param-name">token</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Reset token from email
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">password</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span> - Minimum 4 characters
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method patch">PATCH</span>
+                    <span class="endpoint-path">/auth/update-me</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Update current user profile</div>
+                    <div class="params">
+                        <div class="params-title">Body Parameters (all optional):</div>
+                        <div class="param-item">
+                            <span class="param-name">name</span> <span class="param-type">(string)</span> - Minimum 4
+                            characters
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">email</span> <span class="param-type">(string)</span> - Valid email
+                            format
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Routes -->
+            <div class="section">
+                <div class="section-title">👥 Users</div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/users</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get all users</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/users/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get user by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/users</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Create a new user</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/users/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Update user by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/users/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Delete user by ID</div>
+                </div>
+            </div>
+
+            <!-- Category Routes -->
+            <div class="section">
+                <div class="section-title">📂 Categories</div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/categories</span>
+                    <div class="endpoint-description">Get all categories (public)</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/categories/:id</span>
+                    <div class="endpoint-description">Get category by ID (public)</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/categories</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Create a new category</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/categories/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Update category by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/categories/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Delete category by ID</div>
+                </div>
+            </div>
+
+            <!-- Brand Routes -->
+            <div class="section">
+                <div class="section-title">🏷️ Brands</div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/brands</span>
+                    <div class="endpoint-description">Get all brands (public)</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/brands/:id</span>
+                    <div class="endpoint-description">Get brand by ID (public)</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/brands</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Create a new brand</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/brands/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Update brand by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/brands/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Delete brand by ID</div>
+                </div>
+            </div>
+
+            <!-- Company Routes -->
+            <div class="section">
+                <div class="section-title">🏢 Companies</div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/companies</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get all companies</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/companies/:companyId/products</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get all products for a specific company</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/companies/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get company by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/companies</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Create a new company</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/companies/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Update company by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/companies/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Delete company by ID</div>
+                </div>
+            </div>
+
+            <!-- Product Routes -->
+            <div class="section">
+                <div class="section-title">🛍️ Products</div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/products</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get all products with populated category, brand, company, and
+                        creator</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/products/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Get product by ID with populated fields</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/products</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Create a new product</div>
+                    <div class="params">
+                        <div class="params-title">Body Parameters:</div>
+                        <div class="param-item">
+                            <span class="param-name">name</span> <span class="param-type">(string)</span>
+                            <span class="param-required">required</span>
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">price</span> <span class="param-type">(number)</span>
+                            <span class="param-required">required</span> - Must be non-negative
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">category</span> <span class="param-type">(ObjectId)</span>
+                            <span class="param-required">required</span> - Category ID
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">createdBy</span> <span class="param-type">(ObjectId)</span>
+                            <span class="param-required">required</span> - User ID
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">description</span> <span class="param-type">(string)</span> -
+                            Optional
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">image</span> <span class="param-type">(string)</span> - Optional
+                            image URL
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">quantity</span> <span class="param-type">(number)</span> -
+                            Optional, default 0
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">brand</span> <span class="param-type">(ObjectId)</span> - Optional
+                            brand ID
+                        </div>
+                        <div class="param-item">
+                            <span class="param-name">company</span> <span class="param-type">(ObjectId)</span> -
+                            Optional company ID
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/products/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Update product by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/products/:id</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Delete product by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/products/:id/upload-image</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Upload single product image (resized to max 1200x1200px)</div>
+                    <div class="params">
+                        <div class="params-title">Form Data:</div>
+                        <div class="param-item">
+                            <span class="param-name">image</span> <span class="param-type">(file)</span>
+                            <span class="param-required">required</span> - JPEG, PNG, GIF, or WebP (max 5MB)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/products/:id/images</span>
+                    <span class="auth-badge admin">Admin</span>
+                    <div class="endpoint-description">Upload multiple product images (up to 10, resized to max
+                        1200x1200px)</div>
+                    <div class="params">
+                        <div class="params-title">Form Data:</div>
+                        <div class="param-item">
+                            <span class="param-name">images</span> <span class="param-type">(file[])</span>
+                            <span class="param-required">required</span> - Array of images (JPEG, PNG, GIF, or WebP, max
+                            5MB each)
+                        </div>
+                        <div class="param-item">
+                            <span class="query-param">?replace=true</span> - Optional query param to replace all
+                            existing images instead of appending
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Routes -->
+            <div class="section">
+                <div class="section-title">⭐ Reviews</div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/products/:productId/reviews</span>
+                    <div class="endpoint-description">Create a review for a product</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/products/:productId/reviews</span>
+                    <div class="endpoint-description">Get all reviews for a product</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/products/:productId/reviews/:id</span>
+                    <div class="endpoint-description">Get review by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/products/:productId/reviews/:id</span>
+                    <div class="endpoint-description">Update review by ID</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/products/:productId/reviews/:id</span>
+                    <div class="endpoint-description">Delete review by ID</div>
+                </div>
+            </div>
+
+            <!-- Cart Routes -->
+            <div class="section">
+                <div class="section-title">🛒 Cart</div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/cart</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Get current user's cart</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/cart/items</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Add item to cart</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="endpoint-path">/cart/items/:productId</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Update cart item quantity</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/cart/items/:productId</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Remove item from cart</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="endpoint-path">/cart</span>
+                    <span class="auth-badge">Auth Required</span>
+                    <div class="endpoint-description">Clear entire cart</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 40px 0; color: #718096;">
+                <p>✨ Made with ❤️ for E-Shop Backend API</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">Rate Limit: 100 requests per 15 minutes</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
