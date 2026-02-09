@@ -14,6 +14,7 @@ const companyRoutes = require('./routes/companyRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 dotenv.config();
@@ -44,6 +45,7 @@ app.use('/api/v1/companies', companyRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/reviews', reviewRoutes);
+app.use('/api/v1/orders', orderRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Not found' });
