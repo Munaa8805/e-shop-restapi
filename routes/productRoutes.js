@@ -6,7 +6,7 @@ const upload = require('../utils/multerConfig');
 
 const router = express.Router();
 
-
+///get reviews by product id
 router.use('/:productId/reviews', reviewRoutes);
 
 

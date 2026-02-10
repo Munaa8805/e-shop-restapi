@@ -60,6 +60,7 @@ const getProducts = asyncHandler(async (req, res) => {
  * Get a single product by id.
  */
 const getProduct = asyncHandler(async (req, res) => {
+
     const product = await Product.findById(req.params.id)
         .populate('category', 'name description')
         .populate('brand', 'name')
@@ -73,6 +74,7 @@ const getProduct = asyncHandler(async (req, res) => {
 });
 
 const getProductWithReviews = asyncHandler(async (req, res) => {
+
     const product = await Product.findById(req.params.id)
         .populate('reviews', 'rating comment');
     res.status(200).json({ success: true, data: product });

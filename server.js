@@ -15,6 +15,7 @@ const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const bannerRoutes = require('./routes/bannerRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 dotenv.config();
@@ -46,6 +47,12 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/reviews', reviewRoutes);
 app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/banners', bannerRoutes);
+
+app.get('/api/v1/config/paypal', (req, res) => {
+  res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
+  res.status(200).json({ success: true, clientId: process.env.PAYPAL_CLIENT_ID });
+});
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Not found' });

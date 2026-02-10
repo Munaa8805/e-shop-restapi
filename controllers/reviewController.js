@@ -39,13 +39,20 @@ const createReview = asyncHandler(async (req, res) => {
 //     res.status(200).json({ success: true, data: reviews });
 // });
 
-const getAllReviews = asyncHandler(async (req, res) => {
 
-    const productId = req.params.productId;
 
-    const filter = productId ? { product: productId } : {};
 
-    const reviews = await Review.find(filter);
+const allReviews = asyncHandler(async (req, res) => {
+
+    let query;
+    if (req.params.productId) {
+        query = Review.find({ product: req.params.productId }).sort({ createdAt: -1 });
+    } else {
+        query = Review.find().sort({ createdAt: -1 });
+    }
+
+    const reviews = await query;
+
     if (!reviews) {
         const err = new Error('No reviews found');
         err.statusCode = 404;
@@ -53,6 +60,7 @@ const getAllReviews = asyncHandler(async (req, res) => {
     }
     res.status(200).json({ success: true, data: reviews });
 });
+
 
 /**
  * Get a single review by id. When nested, ensures the review belongs to the given product.
@@ -95,4 +103,4 @@ const deleteReview = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { createReview, getAllReviews, getReview, deleteReview, updateReview };
+module.exports = { createReview, getReview, deleteReview, updateReview, allReviews };

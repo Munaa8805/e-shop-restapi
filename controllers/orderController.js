@@ -59,13 +59,18 @@ const getOrderById = asyncHandler(async (req, res) => {
 /// Protected route
 
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-    const { id, status, update_time, email_address } = req.body;
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id,);
     if (!order) {
         const err = new Error('Order not found');
         err.statusCode = 404;
         throw err;
     }
+    order.paymentResult = { id: req.body.id, status: req.body.status, update_time: req.body.update_time, email_address: req.body.payer.email_address };
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    await order.save();
+    res.status(200).json({ success: true, data: order });
+
 });
 
 
