@@ -19,6 +19,15 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    picture: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dkd5jblv5/image/upload/v1675976806/Default_ProfilePicture_gjngnb.png",
+    },
+    status: {
+      type: String,
+      default: "Hey there ! I am using whatsapp",
+    },
     password: {
       type: String,
       required: [true, 'Password is required'],

@@ -48,18 +48,31 @@ const getProductsByCompany = asyncHandler(async (req, res) => {
  * List all products. Populates category, brand, and company.
  */
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find()
+
+    const pageSize = 2;
+    const page = Number(req.query.page || 1);
+    const skip = (page - 1) * pageSize;
+    const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
+    const total = await Product.countDocuments({ ...keyword });
+
+
+
+    const products = await Product.find({ ...keyword })
+        .skip(skip)
+        .limit(pageSize)
+
         .populate('category', 'name')
         .populate('brand', 'name')
         .populate('company', 'name')
         .populate('createdBy', 'name');
-    res.status(200).json({ success: true, data: products });
+    res.status(200).json({ success: true, data: products, total, page, pageSize, pages: Math.ceil(total / pageSize) });
 });
 
 /**
  * Get a single product by id.
  */
 const getProduct = asyncHandler(async (req, res) => {
+
 
     const product = await Product.findById(req.params.id)
         .populate('category', 'name description')
