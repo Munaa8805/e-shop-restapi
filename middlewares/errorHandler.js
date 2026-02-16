@@ -3,7 +3,7 @@
  * Catches all errors passed to next(err), logs internally without exposing sensitive data,
  * and responds with consistent format: { success: false, message: "User-friendly error message" }.
  */
-import logger from "../config/logger.config.js";
+const logger = require('../config/logger.config');
 const errorHandler = (err, req, res, next) => {
   console.error('Error:', err.message);
   logger.error(`Error: ${err.message}`);

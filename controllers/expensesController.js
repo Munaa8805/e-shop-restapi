@@ -4,7 +4,7 @@ const Expense = require('../models/Expense');
 const createExpense = asyncHandler(async (req, res) => {
     const { title, amount, date, category } = req.body;
     if (!title || !amount || !date || !category) {
-        const err = new Error('All fields are required');
+        const err = new Error('All fields are required, title, amount, date, category');
         err.statusCode = 400;
         throw err;
     }
@@ -21,3 +21,5 @@ const getExpenses = asyncHandler(async (req, res) => {
     const expenses = await Expense.find();
     res.status(200).json({ success: true, data: expenses });
 });
+
+module.exports = { createExpense, getExpenses };
