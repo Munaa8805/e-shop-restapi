@@ -3,14 +3,17 @@
  * Catches all errors passed to next(err), logs internally without exposing sensitive data,
  * and responds with consistent format: { success: false, message: "User-friendly error message" }.
  */
+import logger from "../config/logger.config.js";
 const errorHandler = (err, req, res, next) => {
   console.error('Error:', err.message);
+  logger.error(`Error: ${err.message}`);
 
   let statusCode = err.statusCode || 500;
   let message = 'Something went wrong. Please try again later.';
 
   if (err.statusCode && err.statusCode < 500) {
     message = err.message || 'Request could not be completed.';
+
     statusCode = err.statusCode;
   } else if (err.name === 'ValidationError') {
     statusCode = 400;

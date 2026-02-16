@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
+import logger from "./config/logger.config.js";
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
@@ -16,6 +17,8 @@ const cartRoutes = require('./routes/cartRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const bannerRoutes = require('./routes/bannerRoutes');
+const conversationRoutes = require('./routes/conversationRoute');
+const expensesRoutes = require('./routes/expensesRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 dotenv.config();
@@ -48,7 +51,8 @@ app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/reviews', reviewRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/banners', bannerRoutes);
-
+app.use('/api/v1/conversations', conversationRoutes);
+app.use('/api/v1/expenses', expensesRoutes);
 app.get('/api/v1/config/paypal', (req, res) => {
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
   res.status(200).json({ success: true, clientId: process.env.PAYPAL_CLIENT_ID });
@@ -62,9 +66,12 @@ app.use(errorHandler);
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
+
 });
 
 process.on('unhandledRejection', (err) => {
   console.log(`Error: ${err.message}`);
+  logger.error(`Error: ${err.message}`);
   server.close(() => process.exit(1));
 });
