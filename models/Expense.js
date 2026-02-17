@@ -10,7 +10,7 @@ const expenseSchema = new mongoose.Schema(
             type: Number,
             required: [true, "Amount is required"],
         },
-        data: {
+        date: {
             type: Date,
             required: [true, "Date is required"],
             default: Date.now,
@@ -27,6 +27,7 @@ const expenseSchema = new mongoose.Schema(
                 "salary",
                 "bonus",
                 "other",
+                "movie"
             ],
             default: "food",
         },

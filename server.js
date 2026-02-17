@@ -19,6 +19,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const bannerRoutes = require('./routes/bannerRoutes');
 const conversationRoutes = require('./routes/conversationRoute');
 const expensesRoutes = require('./routes/expensesRoutes');
+const movieRoutes = require('./routes/movieRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 dotenv.config();
@@ -53,6 +54,7 @@ app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/banners', bannerRoutes);
 app.use('/api/v1/conversations', conversationRoutes);
 app.use('/api/v1/expenses', expensesRoutes);
+app.use('/api/v1/movies', movieRoutes);
 app.get('/api/v1/config/paypal', (req, res) => {
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
   res.status(200).json({ success: true, clientId: process.env.PAYPAL_CLIENT_ID });
