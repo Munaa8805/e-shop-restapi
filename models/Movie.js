@@ -25,6 +25,10 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Genre is required'],
     },
+    trending: {
+        type: Boolean,
+        default: false,
+    }
 
 }, { timestamps: true });
 
